@@ -1,0 +1,168 @@
+/* ═══════════════════════════════════════════
+   FNAF: SISTER LOCATION — FANMADE
+   Additional UI Stylesheet
+═══════════════════════════════════════════ */
+
+/* ── NOTIFICATION TOAST ── */
+.toast {
+  position: fixed;
+  top: 20px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(5,5,15,0.97);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 28px;
+  font-size: 0.82rem;
+  color: var(--text);
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  letter-spacing: 1px;
+  text-align: center;
+  max-width: 500px;
+  white-space: pre-line;
+}
+
+.toast.show { opacity: 1; }
+.toast.warn  { border-color: var(--orange); color: #ffaa55; }
+.toast.error { border-color: var(--red-glow); color: var(--red-glow); }
+.toast.good  { border-color: var(--green); color: var(--green); }
+
+/* ── LOADING OVERLAY ── */
+.loading-overlay {
+  position: fixed; inset: 0;
+  background: #000;
+  z-index: 999;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 20px;
+  transition: opacity 0.5s;
+}
+
+.loading-overlay.fade-out { opacity: 0; pointer-events: none; }
+
+.loading-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2rem; color: var(--red-glow);
+  letter-spacing: 6px;
+  text-shadow: 0 0 20px var(--red);
+}
+
+.loading-bar-wrap {
+  width: 300px; height: 4px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border);
+  border-radius: 2px; overflow: hidden;
+}
+
+.loading-bar {
+  height: 100%; width: 0%;
+  background: var(--red-glow);
+  transition: width 0.3s;
+  border-radius: 2px;
+}
+
+.loading-text {
+  font-size: 0.7rem; color: var(--text-dim);
+  letter-spacing: 3px;
+}
+
+/* ── AMBIENT PARTICLES ── */
+.particle {
+  position: fixed;
+  width: 2px; height: 2px;
+  background: rgba(200,0,0,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  animation: particleDrift linear infinite;
+}
+
+@keyframes particleDrift {
+  from { transform: translateY(100vh) translateX(0); opacity: 0.6; }
+  to   { transform: translateY(-20px) translateX(30px); opacity: 0; }
+}
+
+/* ── VIGNETTE OVERLAY ── */
+.vignette {
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at center,
+    transparent 50%, rgba(0,0,0,0.6) 100%);
+  pointer-events: none; z-index: 5;
+}
+
+/* ── STATIC NOISE ── */
+.static-noise {
+  position: fixed; inset: 0;
+  opacity: 0.03;
+  pointer-events: none; z-index: 6;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  animation: staticShift 0.1s steps(1) infinite;
+}
+
+@keyframes staticShift {
+  0%   { background-position: 0 0; }
+  25%  { background-position: 50px 30px; }
+  50%  { background-position: 10px 80px; }
+  75%  { background-position: 90px 10px; }
+  100% { background-position: 30px 60px; }
+}
+
+/* ── SCREEN TRANSITION ── */
+.screen-fade-in {
+  animation: screenFadeIn 0.4s ease-out forwards;
+}
+
+@keyframes screenFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── BABY SPEAKING INDICATOR ── */
+.baby-speaking {
+  position: fixed; top: 20px; right: 20px;
+  background: rgba(200,0,0,0.15);
+  border: 1px solid var(--red);
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.72rem; color: var(--red-glow);
+  letter-spacing: 2px; z-index: 30;
+  display: none;
+}
+
+.baby-speaking.show { display: block; }
+
+/* ── DANGER FLASH ── */
+.danger-flash {
+  position: fixed; inset: 0;
+  background: rgba(200,0,0,0.08);
+  pointer-events: none; z-index: 50;
+  animation: dangerPulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes dangerPulse {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── POWER CRITICAL ── */
+.power-critical .private-power-fill {
+  background: var(--red-glow) !important;
+  animation: powerPulse 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes powerPulse {
+  from { opacity: 0.6; }
+  to   { opacity: 1; }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .pcm-windows { grid-template-columns: 1fr; }
+  .pcm-controls { grid-template-columns: 1fr; }
+  .cam-sidebar { width: 200px; }
+  .private-stats { flex-direction: column; }
+  .crawl-buttons { flex-direction: column; }
+}
