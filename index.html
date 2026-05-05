@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Five Nights at Freddy's: Sister Location — Fanmade</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/ui.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════
+       TITLE SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-title" class="screen active">
+    <div class="title-bg"></div>
+    <div class="title-overlay"></div>
+    <div class="title-content">
+      <div class="title-logo">
+        <span class="title-small">Five Nights at Freddy's</span>
+        <span class="title-main">SISTER<br>LOCATION</span>
+        <span class="title-sub">— Fanmade Edition —</span>
+      </div>
+      <nav class="title-menu">
+        <button class="menu-btn active-btn" id="btn-newgame">▶ NEW GAME</button>
+        <button class="menu-btn" id="btn-continue">◈ CONTINUE</button>
+        <button class="menu-btn" id="btn-extras">★ EXTRAS</button>
+        <button class="menu-btn" id="btn-howtoplay">? HOW TO PLAY</button>
+      </nav>
+      <div class="title-footer">A Fanmade FNAF Project — Not affiliated with Scott Cawthon</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       HOW TO PLAY SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-howtoplay" class="screen">
+    <div class="dark-bg"></div>
+    <div class="panel-box">
+      <h2 class="panel-title">HOW TO PLAY</h2>
+      <div class="howto-grid">
+        <div class="howto-card">
+          <div class="howto-icon">🔵</div>
+          <h3>Check Stages</h3>
+          <p>Use the <strong>LIGHT</strong> button to illuminate each animatronic's stage and confirm they are present.</p>
+        </div>
+        <div class="howto-card">
+          <div class="howto-icon">⚡</div>
+          <h3>Controlled Shock</h3>
+          <p>If an animatronic is off-stage, press <strong>SHOCK</strong> to motivate them back into position.</p>
+        </div>
+        <div class="howto-card">
+          <div class="howto-icon">🎛️</div>
+          <h3>Repair Systems</h3>
+          <p>In the Breaker Room, click the <strong>breaker switches</strong> in the correct order to restore power.</p>
+        </div>
+        <div class="howto-card">
+          <div class="howto-icon">🔇</div>
+          <h3>Stay Silent</h3>
+          <p>While crawling through Ballora Gallery, <strong>move slowly</strong>. Ballora tracks sound — stay quiet!</p>
+        </div>
+        <div class="howto-card">
+          <div class="howto-icon">🛡️</div>
+          <h3>Defend Yourself</h3>
+          <p>In Parts/Service, watch Funtime Freddy's <strong>danger meter</strong>. Play Bon-Bon's audio to calm him.</p>
+        </div>
+        <div class="howto-card">
+          <div class="howto-icon">🔋</div>
+          <h3>Manage Power</h3>
+          <p>In the Private Room, keep the <strong>power generator</strong> running to survive until 6 AM.</p>
+        </div>
+      </div>
+      <button class="menu-btn" id="btn-howtoplay-back">← BACK</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       EXTRAS SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-extras" class="screen">
+    <div class="dark-bg"></div>
+    <div class="panel-box">
+      <h2 class="panel-title">EXTRAS</h2>
+      <div class="extras-grid" id="extras-grid">
+        <!-- filled by JS -->
+      </div>
+      <button class="menu-btn" id="btn-extras-back">← BACK</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       NIGHT SELECT SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-nightselect" class="screen">
+    <div class="dark-bg"></div>
+    <div class="panel-box">
+      <h2 class="panel-title">SELECT NIGHT</h2>
+      <div class="night-grid" id="night-grid">
+        <!-- filled by JS -->
+      </div>
+      <button class="menu-btn" id="btn-nightselect-back">← BACK</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       ELEVATOR SCREEN (Night Intro)
+  ══════════════════════════════════════════════ -->
+  <div id="screen-elevator" class="screen">
+    <div class="elevator-bg"></div>
+    <div class="elevator-content">
+      <div class="handunit-box" id="handunit-box">
+        <div class="handunit-header">
+          <span class="handunit-logo">HandUnit™</span>
+          <span class="handunit-model">Model 5 — H.A.R.U.S.</span>
+        </div>
+        <div class="handunit-text" id="handunit-text"></div>
+        <div class="handunit-input-area" id="handunit-input-area" style="display:none;">
+          <input type="text" id="handunit-input" maxlength="20" placeholder="Type your name..." />
+          <button id="handunit-submit">CONFIRM</button>
+        </div>
+        <button class="handunit-next" id="handunit-next" style="display:none;">[ CONTINUE ]</button>
+      </div>
+      <div class="night-label" id="night-label"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       MAIN GAME SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-game" class="screen">
+
+    <!-- Room Background -->
+    <div id="room-bg" class="room-bg"></div>
+    <div id="room-overlay" class="room-overlay"></div>
+
+    <!-- Animatronic on Stage -->
+    <div id="stage-animatronic" class="stage-animatronic hidden"></div>
+
+    <!-- Stage Light Flash -->
+    <div id="stage-light" class="stage-light hidden"></div>
+
+    <!-- ── PRIMARY CONTROL MODULE UI ── -->
+    <div id="ui-pcm" class="game-ui hidden">
+      <div class="pcm-panel">
+        <div class="pcm-windows">
+          <div class="pcm-window" id="pcm-window-left">
+            <div class="pcm-window-label">BALLORA GALLERY</div>
+            <div class="pcm-window-view" id="view-ballora"></div>
+          </div>
+          <div class="pcm-window" id="pcm-window-right">
+            <div class="pcm-window-label">FUNTIME AUDITORIUM</div>
+            <div class="pcm-window-view" id="view-funtime-foxy"></div>
+          </div>
+        </div>
+        <div class="pcm-controls">
+          <div class="pcm-control-group">
+            <span class="pcm-label">BALLORA</span>
+            <button class="pcm-btn blue" id="btn-light-ballora">💡 LIGHT</button>
+            <button class="pcm-btn red" id="btn-shock-ballora">⚡ SHOCK</button>
+          </div>
+          <div class="pcm-control-group">
+            <span class="pcm-label">FUNTIME FOXY</span>
+            <button class="pcm-btn blue" id="btn-light-foxy">💡 LIGHT</button>
+            <button class="pcm-btn red" id="btn-shock-foxy">⚡ SHOCK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CIRCUS CONTROL UI ── -->
+    <div id="ui-cc" class="game-ui hidden">
+      <div class="cc-panel">
+        <div class="cc-window-frame">
+          <div class="cc-window-label">CIRCUS BABY'S AUDITORIUM</div>
+          <div class="cc-window-view" id="view-baby"></div>
+        </div>
+        <div class="cc-controls">
+          <button class="pcm-btn blue" id="btn-light-baby">💡 CHECK LIGHT</button>
+          <button class="pcm-btn red" id="btn-shock-baby">⚡ CONTROLLED SHOCK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BALLORA GALLERY CRAWL UI ── -->
+    <div id="ui-ballora-crawl" class="game-ui hidden">
+      <div class="crawl-panel">
+        <div class="crawl-info">
+          <div class="crawl-title">BALLORA GALLERY</div>
+          <div class="crawl-subtitle">Move slowly. She can hear you.</div>
+        </div>
+        <div class="crawl-meter-box">
+          <span class="crawl-meter-label">SOUND LEVEL</span>
+          <div class="crawl-meter-bar">
+            <div class="crawl-meter-fill" id="crawl-sound-fill"></div>
+          </div>
+          <span class="crawl-meter-label" id="crawl-sound-label">SILENT</span>
+        </div>
+        <div class="crawl-progress-box">
+          <span class="crawl-meter-label">PROGRESS</span>
+          <div class="crawl-meter-bar">
+            <div class="crawl-meter-fill green" id="crawl-progress-fill"></div>
+          </div>
+        </div>
+        <div class="crawl-buttons">
+          <button class="crawl-btn" id="btn-crawl-move">CRAWL FORWARD</button>
+          <button class="crawl-btn pause-btn" id="btn-crawl-stop">STOP &amp; WAIT</button>
+        </div>
+        <div class="crawl-status" id="crawl-status">Ballora is on her stage...</div>
+      </div>
+    </div>
+
+    <!-- ── BREAKER ROOM UI ── -->
+    <div id="ui-breaker" class="game-ui hidden">
+      <div class="breaker-panel">
+        <div class="breaker-title">BREAKER CONTROL BOX</div>
+        <div class="breaker-subtitle">Restore power in the correct sequence.</div>
+        <div class="breaker-danger-box">
+          <span class="breaker-danger-label">FREDDY DANGER</span>
+          <div class="breaker-danger-bar">
+            <div class="breaker-danger-fill" id="breaker-danger-fill"></div>
+          </div>
+          <span id="breaker-danger-text" class="breaker-danger-text">LOW</span>
+        </div>
+        <div class="breaker-switches" id="breaker-switches"></div>
+        <div class="breaker-progress">
+          <span id="breaker-progress-text">Switches restored: 0 / 8</span>
+        </div>
+        <button class="pcm-btn blue" id="btn-play-bonbon" style="margin-top:10px;">🔊 PLAY BON-BON AUDIO</button>
+        <div class="breaker-status" id="breaker-status">Interface with the breaker box to restore power.</div>
+      </div>
+    </div>
+
+    <!-- ── PARTS / SERVICE UI ── -->
+    <div id="ui-parts" class="game-ui hidden">
+      <div class="parts-panel">
+        <div class="parts-title">PARTS / SERVICE</div>
+        <div class="parts-subtitle">Repair Funtime Freddy. Follow the sequence.</div>
+        <div class="parts-danger-box">
+          <span class="parts-danger-label">FREDDY ACTIVITY</span>
+          <div class="parts-danger-bar">
+            <div class="parts-danger-fill" id="parts-danger-fill"></div>
+          </div>
+        </div>
+        <div class="parts-steps" id="parts-steps"></div>
+        <div class="parts-status" id="parts-status">Begin repair sequence.</div>
+        <button class="pcm-btn blue" id="btn-parts-bonbon">🔊 BON-BON DISTRACT</button>
+      </div>
+    </div>
+
+    <!-- ── FUNTIME AUDITORIUM WALK UI ── -->
+    <div id="ui-ft-walk" class="game-ui hidden">
+      <div class="crawl-panel">
+        <div class="crawl-title">FUNTIME AUDITORIUM</div>
+        <div class="crawl-subtitle">Funtime Foxy is active. Move carefully.</div>
+        <div class="crawl-meter-box">
+          <span class="crawl-meter-label">FOXY PROXIMITY</span>
+          <div class="crawl-meter-bar">
+            <div class="crawl-meter-fill red" id="ftwalk-danger-fill"></div>
+          </div>
+        </div>
+        <div class="crawl-progress-box">
+          <span class="crawl-meter-label">PROGRESS</span>
+          <div class="crawl-meter-bar">
+            <div class="crawl-meter-fill green" id="ftwalk-progress-fill"></div>
+          </div>
+        </div>
+        <div class="crawl-buttons">
+          <button class="crawl-btn" id="btn-ftwalk-move">MOVE FORWARD</button>
+          <button class="crawl-btn pause-btn" id="btn-ftwalk-stop">FREEZE</button>
+        </div>
+        <div class="crawl-status" id="ftwalk-status">Funtime Foxy is somewhere in the dark...</div>
+      </div>
+    </div>
+
+    <!-- ── PRIVATE ROOM UI ── -->
+    <div id="ui-private" class="game-ui hidden">
+      <div class="private-panel">
+        <div class="private-title">PRIVATE ROOM</div>
+        <div class="private-subtitle">Survive until 6 AM. Keep the power running.</div>
+        <div class="private-stats">
+          <div class="private-stat-box">
+            <span class="private-stat-label">TIME</span>
+            <span class="private-stat-value" id="private-time">12:00 AM</span>
+          </div>
+          <div class="private-stat-box">
+            <span class="private-stat-label">POWER</span>
+            <div class="private-power-bar">
+              <div class="private-power-fill" id="private-power-fill"></div>
+            </div>
+            <span class="private-stat-value" id="private-power-pct">100%</span>
+          </div>
+        </div>
+        <div class="private-ennard-box">
+          <span class="private-stat-label">ENNARD LOCATION</span>
+          <div class="private-ennard-indicator" id="ennard-indicator">
+            <div class="ennard-pos" id="ennard-left">LEFT VENT</div>
+            <div class="ennard-pos center" id="ennard-center">CENTER</div>
+            <div class="ennard-pos" id="ennard-right">RIGHT VENT</div>
+          </div>
+        </div>
+        <div class="private-buttons">
+          <button class="pcm-btn blue" id="btn-private-recharge">🔋 RECHARGE POWER</button>
+          <button class="pcm-btn red" id="btn-private-shock">⚡ SHOCK ENNARD</button>
+        </div>
+        <div class="private-status" id="private-status">Ennard is trying to get in...</div>
+      </div>
+    </div>
+
+    <!-- ── CAMERA SYSTEM ── -->
+    <div id="ui-cameras" class="camera-ui hidden">
+      <div class="cam-header">
+        <span class="cam-title">CAMERA SYSTEM — CIRCUS BABY'S ENTERTAINMENT &amp; RENTAL</span>
+        <button id="btn-cam-close" class="cam-close-btn">✕ CLOSE</button>
+      </div>
+      <div class="cam-body">
+        <div class="cam-feed-box">
+          <div class="cam-feed" id="cam-feed">
+            <div class="cam-scanlines"></div>
+            <div class="cam-label-overlay" id="cam-label-overlay">CAM 01 — PRIMARY CONTROL MODULE</div>
+            <div class="cam-animatronic-overlay" id="cam-animatronic-overlay"></div>
+          </div>
+        </div>
+        <div class="cam-sidebar">
+          <div class="cam-map">
+            <div class="cam-map-title">FACILITY MAP</div>
+            <div class="cam-buttons" id="cam-buttons">
+              <!-- filled by JS -->
+            </div>
+          </div>
+          <div class="cam-animatronic-list" id="cam-animatronic-list">
+            <!-- filled by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BOTTOM HUD ── -->
+    <div id="game-hud" class="game-hud hidden">
+      <div class="hud-left">
+        <span class="hud-night" id="hud-night">NIGHT 1</span>
+        <span class="hud-location" id="hud-location">Primary Control Module</span>
+      </div>
+      <div class="hud-center">
+        <div class="hud-handunit-msg" id="hud-handunit-msg"></div>
+      </div>
+      <div class="hud-right">
+        <button class="hud-btn" id="btn-cameras">📷 CAMERAS</button>
+        <button class="hud-btn" id="btn-vent">🌀 VENTS</button>
+      </div>
+    </div>
+
+    <!-- ── HANDUNIT DIALOGUE BOX ── -->
+    <div id="dialogue-box" class="dialogue-box hidden">
+      <div class="dialogue-speaker" id="dialogue-speaker">HandUnit</div>
+      <div class="dialogue-text" id="dialogue-text"></div>
+      <button class="dialogue-next" id="dialogue-next">[ CONTINUE ]</button>
+    </div>
+
+  </div><!-- end screen-game -->
+
+  <!-- ══════════════════════════════════════════════
+       JUMPSCARE SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-jumpscare" class="screen">
+    <div class="jumpscare-bg" id="jumpscare-bg"></div>
+    <div class="jumpscare-flash" id="jumpscare-flash"></div>
+    <div class="jumpscare-text" id="jumpscare-text">GAME OVER</div>
+    <button class="menu-btn" id="btn-retry">↺ TRY AGAIN</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       NIGHT COMPLETE SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-complete" class="screen">
+    <div class="dark-bg"></div>
+    <div class="complete-box">
+      <div class="complete-title" id="complete-title">NIGHT 1 COMPLETE</div>
+      <div class="complete-subtitle">Shift Complete!</div>
+      <div class="tv-box">
+        <div class="tv-screen">
+          <div class="tv-show-title">THE IMMORTAL AND THE RESTLESS</div>
+          <div class="tv-dialogue" id="tv-dialogue"></div>
+        </div>
+      </div>
+      <button class="menu-btn" id="btn-next-night">▶ NEXT NIGHT</button>
+      <button class="menu-btn" id="btn-complete-menu">⌂ MAIN MENU</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       GAME WIN SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-win" class="screen">
+    <div class="dark-bg"></div>
+    <div class="complete-box">
+      <div class="complete-title" style="color:#ff4444;">ALL NIGHTS COMPLETE</div>
+      <div class="complete-subtitle">You survived Circus Baby's Entertainment &amp; Rental.</div>
+      <p class="win-text">The facility has been shut down. Ennard has been contained.<br>
+      You are free... for now.</p>
+      <div class="win-animatronics" id="win-animatronics"></div>
+      <button class="menu-btn" id="btn-win-menu">⌂ MAIN MENU</button>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/nights.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
